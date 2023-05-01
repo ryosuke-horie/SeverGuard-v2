@@ -6,9 +6,6 @@ import os
 from dotenv import load_dotenv
 from email.mime.text import MIMEText
 from email.utils import formatdate
-import datetime
-import time
-
 
 # Gmailアカウントの情報を環境変数から取得
 load_dotenv()
@@ -59,16 +56,19 @@ if __name__ == '__main__':
         {'url': 'https://www.j-net-gs.com/gsession/common/cmn001.do', 'name': 'グループセッション'},
         {'url': 'https://www.kenbaiki-pro.jp/', 'name': '券売機プロ'},
     ]
+
     # ヘルスチェックの結果を格納する配列を定義
     health_check_results = []
+
     # ヘルスチェックを行うURLの数だけループ
     for url in urls:
         # ヘルスチェックを行う
         health_check_result = health_check(url['url'])
         # ヘルスチェックの結果を配列に格納
         health_check_results.append(f"{url['name']}：{health_check_result}")
+
     # ヘルスチェックの結果を表示
     print('\n'.join(health_check_results))
+
     # ヘルスチェックの結果をメールで送信
     send_mail('\n'.join(health_check_results))
-
