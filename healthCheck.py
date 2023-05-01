@@ -1,14 +1,16 @@
 # URLを配列で定義し、それぞれのURLに対してリクエストを送り、レスポンスを受け取ることで、ヘルスチェックを行う。
 # 結果はGmailで通知する。
-import requests
-import smtplib
-import os
-from dotenv import load_dotenv
-from email.mime.text import MIMEText
-from email.utils import formatdate
+import requests                      # URLにリクエストを送信してレスポンスを送信する。
+import smtplib                       # メールを送信する。
+import os                            # 環境変数を取得する。
+from dotenv import load_dotenv       # .envファイルから環境変数を読み込む。
+from email.mime.text import MIMEText # メールの内容を作成する。
+from email.utils import formatdate   # メールの日付を作成する。
 
-# Gmailアカウントの情報を環境変数から取得
+# .envファイルから環境変数を読み込む
 load_dotenv()
+
+# Gmailのアドレスとパスワードを環境変数から取得
 address  = os.getenv('GMAIL_USER')
 password = os.getenv('GMAIL_PASSWORD')
 
@@ -18,8 +20,9 @@ def send_mail(body):
     msg = MIMEText(body)
     msg['Subject'] = 'ヘルスチェック結果'
     msg['From'] = address
-    msg['To'] = address
+    msg['To']   = address
     msg['Date'] = formatdate()
+
     # Gmailに接続
     smtp = smtplib.SMTP('smtp.gmail.com', 587)
     smtp.ehlo()
@@ -41,10 +44,10 @@ def health_check(url):
         if status_code == 200:
             return 'OK'
         else:
-            return 'NG'
+            return 'ステータスコードが200ではありません。'
     except requests.exceptions.RequestException:
         # リクエスト自体が失敗した場合はNGと判定
-        return 'NG'
+        return 'リクエストが失敗しました。'
 
 # メイン処理
 if __name__ == '__main__':
