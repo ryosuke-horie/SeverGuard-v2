@@ -5,7 +5,7 @@
 import unittest
 import requests
 from unittest.mock import patch
-from health_check import health_check
+from src.health_check import health_check
 
 class TestHealthCheck(unittest.TestCase):
     # ステータスコードが200の場合、OKが返ることを確認します。
